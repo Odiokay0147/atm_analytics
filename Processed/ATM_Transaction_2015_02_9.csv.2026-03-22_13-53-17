@@ -1,0 +1,6 @@
+ATM Name,Date,No Of Withdrawals,No Of XYZ Card Withdrawals,No Of Other Card Withdrawals,Total amount Withdrawn,Amount withdrawn XYZ Card,Amount withdrawn Other Card,Weekday,Festival Religion,Working Day,Holiday Sequence,Processed_Time
+Big Street ATM,2015-02-09,123,40,83,357800,167100,190700,Monday,NH,W,HWW,2026-03-22 13:53:17.125494
+Mount Road ATM,2015-02-09,153,99,54,676000,491400,184600,Monday,NH,W,HWW,2026-03-22 13:53:17.125494
+Airport ATM,2015-02-09,104,81,23,384300,329100,55200,Monday,NH,W,HWW,2026-03-22 13:53:17.125494
+KK Nagar ATM,2015-02-09,195,140,55,940600,720700,219900,Monday,NH,W,HWW,2026-03-22 13:53:17.125494
+Christ College ATM,2015-02-09,172,58,114,781000,315100,465900,Monday,NH,W,HWW,2026-03-22 13:53:17.125494

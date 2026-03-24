@@ -1,0 +1,3 @@
+ATM Name,Date,No Of Withdrawals,No Of XYZ Card Withdrawals,No Of Other Card Withdrawals,Total amount Withdrawn,Amount withdrawn XYZ Card,Amount withdrawn Other Card,Weekday,Festival Religion,Working Day,Holiday Sequence,Processed_Time
+Airport ATM,2017-01-09,1,1,0,2600,2600,0,MONDAY,NH,W,HWW,2026-03-23 10:55:00.062708
+KK Nagar ATM,2017-01-09,11,8,3,34700,27200,7500,MONDAY,NH,W,HWW,2026-03-23 10:55:00.062708
