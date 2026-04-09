@@ -5,6 +5,7 @@ import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from Processing.analyse_data import main as analyse_data_main
+from dashboard import app
 
 
 def run():
@@ -13,7 +14,6 @@ def run():
     analyse_data_main()
 
     print("\nAnalysis Completed Successfully!")
-
 
 if __name__ == "__main__":
     run()

@@ -66,7 +66,7 @@ def save_yearly_charts(df, year):
         safe_df = df[df[total_withdrawals_col] > 0].copy()
         safe_df['Avg_Txn_Size'] = safe_df[total_amount_col] / safe_df[total_withdrawals_col]
         
-        avg_size = safe_df.groupby('Month')['Avg_Txn_Size'].mean().reindex(["Jan", "Feb", "Mar", "Apr", "May", "Jun"])
+        avg_size = safe_df.groupby('Month', observed=False)['Avg_Txn_Size'].mean().reindex(["Jan", "Feb", "Mar", "Apr", "May", "Jun"])
         fig = px.line(
             x=avg_size.index,
             y=avg_size.values,
@@ -90,6 +90,7 @@ def save_yearly_charts(df, year):
         fig = px.bar(
             x=workday_avg.index,
             y=workday_avg.values,
+            color=workday_avg.index,
             title=f"Average Daily Withdrawals: Work Day vs Holiday - {year}",
             labels={"x": "Day Type", "y": "Avg Withdrawals"}
         )
@@ -126,11 +127,12 @@ def save_yearly_charts(df, year):
     # monthly (Jan-Jun)
     month_order = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"]
     
-    monthly = df.groupby('Month')[target_col].sum().reindex(month_order)
+    monthly = df.groupby('Month')[target_col].sum().reindex(month_order).reset_index()
     fig = px.bar(
         monthly,
-        x=monthly.index,
-        y=monthly.values,
+        x="Month",
+        y=target_col,
+        color="Month",
         title=f"Monthly Transactions - {year} (Jan-Jun)",
         labels={"x": "Month", "y": "Total Withdrawals"}
     )
@@ -164,6 +166,7 @@ def save_yearly_charts(df, year):
             atm_df,
             x="ATM Name",
             y="Total Withdrawals",
+            color="ATM Name",
             title=f"Top 5 ATMs - {year}"
         )
         fig.update_layout(hovermode="x unified")
@@ -175,13 +178,16 @@ def save_yearly_charts(df, year):
 
     # CARD TYPE ANALYSIS
     if xyz_col and other_col:
-        xyz_total = df[xyz_col].sum()
-        other_total = df[other_col].sum()
         
-        card_series = pd.Series({'XYZ Card': xyz_total, 'Other Cards': other_total})
+        card_data = pd.DataFrame({
+            'Card Type': ['XYZ Card', 'Other Cards'],
+            'Withdrawals': [df[xyz_col].sum(), df[other_col].sum()]
+        })
         fig = px.bar(
-            x=card_series.index,
-            y=card_series.values,
+            card_data,
+            x="Card Type",
+            y="Withdrawals",
+            color="Card Type",
             title=f"Card Usage Comparison - {year}",
             labels={"x": "Card Type", "y": "Total Withdrawals"}
         )
