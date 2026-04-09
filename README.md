@@ -1,3 +1,5 @@
+## Kindly note to open the charts on vscode, user/ready have to install the preview extension from microsoft on vscode. This is as a result of the charts having .html
+
 # ATM Transaction Analysis (2015–2017)
 
 ## Project Overview
@@ -108,7 +110,6 @@ Reduced reliance on cash transactions
 Possible changes in ATM network usage
 
 # Key Findings
-
 1. ATM withdrawals declined steadily from 2015 to 2017
 2. Withdrawal peaks shifted from early-year to mid-year
 3. Christ College ATM consistently performed as the top ATM
@@ -116,20 +117,3 @@ Possible changes in ATM network usage
 5. ATM usage is slightly higher on working days
 6. Festival periods can influence higher withdrawal volumes
 7. Average withdrawal amounts increase gradually during the year
-
-# Project Structure
-Project
-│
-├── data
-│   ├── processed
-│
-├── charts
-│   ├── monthly charts
-│   ├── weekly charts
-│   ├── ATM analysis
-│   ├── card usage
-│
-├── processing
-│   └── analysis scripts
-|
-└── README.md
