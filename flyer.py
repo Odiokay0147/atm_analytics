@@ -11,7 +11,7 @@ def send_email():
     msg = MIMEMultipart('related')
     msg['Subject'] = "ATM Analytics Hourly Update"
     msg['From'] = f"Odion Kassim <{sender_email}>"
-    msg['To'] = receiver_email
+    msg['To'] = ", ".join(receiver_email)
 
     html = f"""
     <html>
