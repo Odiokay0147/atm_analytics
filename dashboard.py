@@ -5,7 +5,7 @@ import dash_bootstrap_components as dbc
 
 from Processing.analyse_data import load_data, preprocess
 
-app = Dash(__name__, external_stylesheets=[dbc.themes.SLATE], suppress_callback_exceptions=True)
+app = Dash(__name__, external_stylesheets=[dbc.themes.LUX], suppress_callback_exceptions=True)
 
 df = load_data()
 df = preprocess(df)
@@ -19,14 +19,18 @@ CARD_STYLE = {"margin-top": "20px", "box-shadow": "0 4px 6px rgba(0,0,0,0.3)"}
 app.layout = dbc.Container([
     #header
     dbc.Row([
-        dbc.Col(html.H1("ATM Analytics", className="text-center my-4 text-info"), width=12)
+        dbc.Col([
+            html.H1("XYZ ATM ANALYTICS REPORT", className="text-center mt-5 font-weight-bold"),
+            html.P("Predictive Insights & Volume Analysis | 2015 - 2017", className="text-center text-muted mb-4"),
+            html.Hr(),
+        ], width=12)
     ]),
     dbc.Row([
-        dbc.Col(dbc.Card([dbc.CardBody([html.H6("Total Withdrawals"), html.H2(id="total-vol", className="text-info")])]), width=3),
+        dbc.Col(dbc.Card([dbc.CardBody([html.H6("Total Withdrawals"), html.H2(id="total-vol", className="text-primary")])]), width=3),
         dbc.Col(dbc.Card([dbc.CardBody([html.H6("Total Cash Out"), html.H2(id="total-val", className="text-success")])]), width=3),
         dbc.Col(dbc.Card([dbc.CardBody([html.H6("Avg Txn Value"), html.H2(id="avg-val", className="text-warning")])]), width=3),
         dbc.Col(dbc.Card([dbc.CardBody([html.H6("Top ATM"), html.H2(id="top-atm", className="text-danger")])]), width=3),
-    ], className="mb-4"),
+    ], className="mb-4 text-center"),
 
     #Year Dropdown
     dbc.Row([
@@ -49,7 +53,7 @@ app.layout = dbc.Container([
 
     #hidden stores to keep track of state
     dcc.Store(id='selected-year', data=years[0]),
-    dcc.Store(id='active-tab', data='yearly'),
+    dcc.Store(id='active-tab', data='year'),
 
     #tab Content
     html.Div(id="tab-content")
@@ -67,7 +71,7 @@ app.layout = dbc.Container([
 def update_state(*args):
     ctx = callback_context
     if not ctx.triggered:
-        return years[0], 'yearly', "Yearly Performance"
+        return years[0], 'year', "Yearly Performance"
     
     triggered_id = ctx.triggered[0]['prop_id'].split('.')[0]
     
@@ -75,7 +79,7 @@ def update_state(*args):
         return years[0], 'growth', "Yearly Performance"
     else:
         selected_year = int(triggered_id.split('-')[1])
-        return selected_year, 'yearly', f"Yearly: {selected_year}"
+        return selected_year, 'year', f"Year: {selected_year}"
 
 @app.callback(
     [Output("total-vol", "children"),
@@ -113,8 +117,8 @@ def update_kpis(select_year, active_tab):
 
     return (
         f"{total_vol:,}", 
-        f"₦{total_val:,.0f}", 
-        f"₦{avg_val:,.0f}", 
+        f"${total_val:,.0f}", 
+        f"${avg_val:,.0f}", 
         top_atm_name
     )
 
@@ -137,7 +141,7 @@ def render_tab_content(active_tab, select_year):
         fig_growth = px.bar(
             comparison_data, x='Month', y=comparison_data.columns[1:],
             barmode='group', title="Year-over-Year Monthly Comparison",
-            template=template, labels={'value': 'Total Withdrawals', 'variable': 'Year'}
+            template=template, labels={'value': 'Total Withdrawals ($)', 'variable': 'Year'},
         )
         return dbc.Row([
             dbc.Col(dbc.Card([dbc.CardBody(dcc.Graph(figure=fig_growth))], style=CARD_STYLE), width=12)
@@ -173,6 +177,7 @@ def render_tab_content(active_tab, select_year):
         safe_df['Avg_Txn_Size'] = safe_df['Total Amount Withdrawn'] / safe_df['No Of Withdrawals']
         avg_size = safe_df.groupby('Month', observed=False)['Avg_Txn_Size'].mean().reset_index()
         fig5 = px.area(avg_size, x='Month', y='Avg_Txn_Size', title="Average Withdrawal Size", template=template)
+        fig5.update_layout(yaxis_tickprefix="$", yaxis_tickformat=",")
 
         #Festival
         fest_map = {
@@ -203,9 +208,13 @@ def render_tab_content(active_tab, select_year):
                 color_discrete_sequence=px.colors.qualitative.Pastel
             )
             #text labels on the bars
-            fig6.update_traces(texttemplate='₦%{x:,.0s}', textposition='outside')
+            fig6.update_traces(texttemplate='$%{x:,.0s}', textposition='outside')
         else:
-            fig6 = px.bar(title="No Festive Impact Detected for this Period", template=template)
+            fig6 = px.bar(
+                title="No Festive Impact Detected for this Period", 
+                testtemplate = '$%[x:,.0s]',
+                template=template
+            )
 
         for f in [fig1, fig3, fig6]: f.update_layout(showlegend=False)
 
