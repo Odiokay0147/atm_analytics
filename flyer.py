@@ -5,7 +5,7 @@ from email.mime.image import MIMEImage
 
 sender_email = "odionkassim1001@gmail.com"
 sender_password = "vwkq eihe pdxl ftqq"
-receiver_email = "odionkassim0011@gmail.com"
+receiver_email = ["odionkassim0011@gmail.com", "alukomorolayo2016@gmail.com"]
 
 def send_email():
     msg = MIMEMultipart('related')
