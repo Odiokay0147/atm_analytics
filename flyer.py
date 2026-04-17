@@ -42,9 +42,7 @@ def send_email():
     except Exception as e:
         print(f"Error: {e}")
 
-send_email()  # sends immediately on first run
-
-schedule.every().hour.do(send_email)  # <-- the single scheduling line
+schedule.every().hour.at(":00").do(send_email)
 
 while True:
     schedule.run_pending()
